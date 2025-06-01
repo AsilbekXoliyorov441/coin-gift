@@ -68,7 +68,7 @@ const GiftCard = ({ name, coin, images, id , active }) => {
     const token = "7871290399:AAEdnRJa1KkFpPDJCAnbofaYaHfBKWIY8sw"; // Bot tokeningiz
     const chatId = "6713537237"; // Chat ID
 
-    const giftUrl = `https://your-site.com/gifts?id=${id}`;
+    const giftUrl = `https://www.eventsgo.uz/gifts?id=${id}`;
     const currentTime = new Date().toLocaleString();
 
     const message =
