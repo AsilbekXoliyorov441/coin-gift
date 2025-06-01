@@ -45,11 +45,24 @@ const GiftCard = ({ name, coin, images, id }) => {
     setCaptchaValue(value);
   };
 
+  const FIVE_MINUTES = 5 * 60 * 1000; // 5 daqiqa millisekundda
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!captchaValue) {
       alert("Iltimos, CAPTCHA ni tasdiqlang!");
+      return;
+    }
+
+    const lastSent = localStorage.getItem("lastMessageTime");
+    const now = Date.now();
+
+    if (lastSent && now - lastSent < FIVE_MINUTES) {
+      const waitTime = Math.ceil((FIVE_MINUTES - (now - lastSent)) / 1000); // sekundda
+      alert(
+        `Siz allaqachon xabar yuborgansiz. Iltimos, ${waitTime} soniyadan keyin qayta urinib ko'ring.`
+      );
       return;
     }
 
@@ -87,6 +100,7 @@ const GiftCard = ({ name, coin, images, id }) => {
       });
 
       alert("Xabaringiz Telegramga yuborildi!");
+      localStorage.setItem("lastMessageTime", now); // Yuborilgan vaqtni saqlaymiz
       setIsModalOpen(false);
       setFormData({
         fullName: "",
