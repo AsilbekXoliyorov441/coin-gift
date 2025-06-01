@@ -8,7 +8,7 @@ import "swiper/css/navigation";
 
 const FIVE_MINUTES = 5 * 60 * 1000; // 5 daqiqa millisekundlarda
 
-const GiftCard = ({ name, coin, images, id , active }) => {
+const GiftCard = ({ name, coin, images, id, active }) => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
 
@@ -128,7 +128,7 @@ const GiftCard = ({ name, coin, images, id , active }) => {
         className={`w-full max-w-sm mx-auto bg-gradient-to-br from-blue-100 to-white shadow-lg rounded-2xl p-4 flex flex-col justify-between transition-transform duration-300
           ${
             active
-              ? "border-4 border-indigo-500 shadow-indigo-400 scale-105 animate-pulse"
+              ? "border-4 border-yellow-500 shadow-yellow-400 scale-105 animate-pulse"
               : "border border-transparent"
           }
         `}
@@ -217,11 +217,11 @@ const GiftCard = ({ name, coin, images, id , active }) => {
                 <input
                   id="fullName"
                   name="fullName"
-                  type="text"
-                  required
                   value={formData.fullName}
                   onChange={handleChange}
-                  className="w-full border border-gray-300 rounded px-3 py-2"
+                  type="text"
+                  required
+                  className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
 
@@ -230,18 +230,16 @@ const GiftCard = ({ name, coin, images, id , active }) => {
                   className="block text-sm font-medium mb-1"
                   htmlFor="phone"
                 >
-                  Telefon raqami
+                  Telefon
                 </label>
                 <input
                   id="phone"
                   name="phone"
-                  type="tel"
-                  pattern="[0-9+]{7,15}"
-                  required
                   value={formData.phone}
                   onChange={handleChange}
-                  placeholder="+998901234567"
-                  className="w-full border border-gray-300 rounded px-3 py-2"
+                  type="tel"
+                  required
+                  className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
 
@@ -250,17 +248,17 @@ const GiftCard = ({ name, coin, images, id , active }) => {
                   className="block text-sm font-medium mb-1"
                   htmlFor="quantity"
                 >
-                  Nechta sovg'a olmoqchisiz?
+                  Nechta
                 </label>
                 <input
                   id="quantity"
                   name="quantity"
-                  type="number"
-                  min={1}
-                  required
                   value={formData.quantity}
                   onChange={handleChange}
-                  className="w-full border border-gray-300 rounded px-3 py-2"
+                  type="number"
+                  min="1"
+                  required
+                  className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
 
@@ -274,25 +272,25 @@ const GiftCard = ({ name, coin, images, id , active }) => {
                 <textarea
                   id="description"
                   name="description"
-                  rows="3"
                   value={formData.description}
                   onChange={handleChange}
-                  className="w-full border border-gray-300 rounded px-3 py-2"
-                />
+                  rows="3"
+                  className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none"
+                ></textarea>
               </div>
 
               <div className="flex justify-center">
                 <ReCAPTCHA
-                  sitekey="6Lc-zlErAAAAAJHWYKAOuwYXXQvM6oJokvHgxJek"
+                  sitekey="6LdSkmMlAAAAAPqwH3xjq4Up7Yn_Oaeah9xQXToQ"
                   onChange={handleCaptchaChange}
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold"
+                className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white py-2 rounded-md font-semibold"
               >
-                Yuborish
+                Xabar yuborish
               </button>
             </form>
           </div>
