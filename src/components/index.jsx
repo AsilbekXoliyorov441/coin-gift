@@ -283,7 +283,7 @@ const GiftCard = ({ name, coin, images, id , active }) => {
 
               <div className="flex justify-center">
                 <ReCAPTCHA
-                  sitekey="6Lc2qRElAAAAABbnHKMaZ8mcN7Fl6Sn74Ibi-AHO"
+                  sitekey="6Lc-zlErAAAAAJHWYKAOuwYXXQvM6oJokvHgxJek"
                   onChange={handleCaptchaChange}
                 />
               </div>
