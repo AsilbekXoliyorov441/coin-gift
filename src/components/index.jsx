@@ -6,7 +6,9 @@ import ReCAPTCHA from "react-google-recaptcha";
 import "swiper/css";
 import "swiper/css/navigation";
 
-const GiftCard = ({ name, coin, images, id }) => {
+const FIVE_MINUTES = 5 * 60 * 1000; // 5 daqiqa millisekundlarda
+
+const GiftCard = ({ name, coin, images, id , active }) => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
 
@@ -18,14 +20,11 @@ const GiftCard = ({ name, coin, images, id }) => {
     description: "",
   });
 
-  // reCAPTCHA uchun
   const [captchaValue, setCaptchaValue] = useState(null);
 
-  // IP va user-agent saqlash
   const [clientIP, setClientIP] = useState("Noma'lum");
   const userAgent = navigator.userAgent;
 
-  // IP manzilni olish
   useEffect(() => {
     fetch("https://api.ipify.org/?format=json")
       .then((res) => res.json())
@@ -45,8 +44,6 @@ const GiftCard = ({ name, coin, images, id }) => {
     setCaptchaValue(value);
   };
 
-  const FIVE_MINUTES = 5 * 60 * 1000; // 5 daqiqa millisekundda
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -59,9 +56,11 @@ const GiftCard = ({ name, coin, images, id }) => {
     const now = Date.now();
 
     if (lastSent && now - lastSent < FIVE_MINUTES) {
-      const waitTime = Math.ceil((FIVE_MINUTES - (now - lastSent)) / 1000); // sekundda
+      const waitTimeMs = FIVE_MINUTES - (now - lastSent);
+      const minutes = Math.floor(waitTimeMs / 60000);
+      const seconds = Math.floor((waitTimeMs % 60000) / 1000);
       alert(
-        `Siz allaqachon xabar yuborgansiz. Iltimos, ${waitTime} soniyadan keyin qayta urinib ko'ring.`
+        `Siz allaqachon xabar yuborgansiz. Iltimos, ${minutes} daqiqa va ${seconds} soniyadan keyin qayta urinib ko'ring.`
       );
       return;
     }
@@ -70,7 +69,6 @@ const GiftCard = ({ name, coin, images, id }) => {
     const chatId = "6713537237"; // Chat ID
 
     const giftUrl = `https://your-site.com/gifts?id=${id}`;
-
     const currentTime = new Date().toLocaleString();
 
     const message =
@@ -88,27 +86,36 @@ const GiftCard = ({ name, coin, images, id }) => {
       `@Xoliyorov_AsiIbek`;
 
     try {
-      await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          chat_id: chatId,
-          text: message,
-        }),
-      });
+      const res = await fetch(
+        `https://api.telegram.org/bot${token}/sendMessage`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            chat_id: chatId,
+            text: message,
+          }),
+        }
+      );
 
-      alert("Xabaringiz Telegramga yuborildi!");
-      localStorage.setItem("lastMessageTime", now); // Yuborilgan vaqtni saqlaymiz
-      setIsModalOpen(false);
-      setFormData({
-        fullName: "",
-        phone: "",
-        quantity: 1,
-        description: "",
-      });
-      setCaptchaValue(null);
+      if (res.ok) {
+        alert("Xabaringiz yuborildi! Tez orada sizga bog'lanamiz.");
+        localStorage.setItem("lastMessageTime", now.toString());
+        setIsModalOpen(false);
+        setFormData({
+          fullName: "",
+          phone: "",
+          quantity: 1,
+          description: "",
+        });
+        setCaptchaValue(null);
+      } else {
+        alert(
+          "Xabar yuborishda xatolik yuz berdi. Iltimos, keyinroq urinib ko'ring."
+        );
+      }
     } catch (error) {
       alert("Xabar yuborishda xatolik yuz berdi.");
       console.error(error);
@@ -117,7 +124,15 @@ const GiftCard = ({ name, coin, images, id }) => {
 
   return (
     <>
-      <div className="w-full max-w-sm mx-auto bg-gradient-to-br from-blue-100 to-white shadow-lg rounded-2xl p-4 flex flex-col justify-between transition hover:scale-105 duration-300">
+      <div
+        className={`w-full max-w-sm mx-auto bg-gradient-to-br from-blue-100 to-white shadow-lg rounded-2xl p-4 flex flex-col justify-between transition-transform duration-300
+          ${
+            active
+              ? "border-4 border-indigo-500 shadow-indigo-400 scale-105 animate-pulse"
+              : "border border-transparent"
+          }
+        `}
+      >
         <div className="flex justify-between items-center mb-2">
           <h2 className="text-base sm:text-lg font-semibold text-gray-800">
             {name}
@@ -268,16 +283,16 @@ const GiftCard = ({ name, coin, images, id }) => {
 
               <div className="flex justify-center">
                 <ReCAPTCHA
-                  sitekey="6Lc-zlErAAAAAJHWYKAOuwYXXQvM6oJokvHgxJek"
+                  sitekey="6Lc2qRElAAAAABbnHKMaZ8mcN7Fl6Sn74Ibi-AHO"
                   onChange={handleCaptchaChange}
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg shadow-md text-base font-semibold"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold"
               >
-                Jo'natish
+                Yuborish
               </button>
             </form>
           </div>
