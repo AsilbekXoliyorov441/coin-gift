@@ -25,12 +25,25 @@ const GiftCard = ({ name, coin, images, id, active }) => {
   const [clientIP, setClientIP] = useState("Noma'lum");
   const userAgent = navigator.userAgent;
 
+  // Rasmlar yuklanganligini saqlash uchun state
+  const [imagesLoaded, setImagesLoaded] = useState(
+    images ? new Array(images.length).fill(false) : []
+  );
+
   useEffect(() => {
     fetch("https://api.ipify.org/?format=json")
       .then((res) => res.json())
       .then((data) => setClientIP(data.ip))
       .catch(() => setClientIP("Noma'lum"));
   }, []);
+
+  const handleImageLoad = (index) => {
+    setImagesLoaded((prev) => {
+      const newLoaded = [...prev];
+      newLoaded[index] = true;
+      return newLoaded;
+    });
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -174,7 +187,14 @@ const GiftCard = ({ name, coin, images, id, active }) => {
                     <img
                       src={img}
                       alt={`${name}-${idx}`}
-                      className="w-full h-60 sm:h-72 object-contain object-center"
+                      onLoad={() => handleImageLoad(idx)}
+                      className="w-full h-60 sm:h-72 object-contain object-center transition-all duration-700"
+                      style={{
+                        filter: imagesLoaded[idx]
+                          ? "none"
+                          : "blur(20px) grayscale(80%)",
+                        transition: "filter 0.7s ease",
+                      }}
                     />
                   </SwiperSlide>
                 ))}
