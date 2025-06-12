@@ -207,7 +207,7 @@ const GiftCard = ({ name, coin, images, id, active }) => {
 
         <button
           onClick={() => setIsModalOpen(true)}
-          className="mt-4 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg shadow-md text-sm sm:text-base"
+          className="mt-4 bg-blue-500 cursor-pointer hover:bg-blue-600 text-white py-2 rounded-lg shadow-md text-sm sm:text-base"
         >
           Sotib olish
         </button>
@@ -308,7 +308,7 @@ const GiftCard = ({ name, coin, images, id, active }) => {
 
               <button
                 type="submit"
-                className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white py-2 rounded-md font-semibold"
+                className="w-full mt-4 cursor-pointer bg-blue-500 hover:bg-blue-600  text-white py-2 rounded-md font-semibold"
               >
                 Xabar yuborish
               </button>
